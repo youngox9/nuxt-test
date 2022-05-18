@@ -1,0 +1,122 @@
+// @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+TC:wght@100;300;400;500;600;700;900&family=Roboto:wght@100;300;400;500;700;900&display=swap");
+// @import "antd/dist/antd.css";
+// @import "antd/dist/antd.dark.css";
+
+$md: 768px;
+html,
+body {
+  color: rgb(40, 40, 40);
+  // background-color: #102027;
+  font-family: PingFangSC, "Noto Sans TC", "Lucida Grande", sans-serif !important;
+}
+
+* {
+  box-sizing: border-box !important;
+}
+
+html,
+body {
+  font-size: 16px;
+  // color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  width: 100%;
+  padding-top: 80px;
+  .content {
+    width: 100%;
+    max-width: 1200px;
+    display: block;
+    margin: 0 auto;
+    padding: 6px;
+
+    h2 {
+      font-size: 2em;
+      font-weight: bolder;
+      margin-bottom: 1em;
+    }
+  }
+}
+
+.order-footer {
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  box-shadow: 2px 0px 12px #aaa;
+  padding: 6px 12px;
+  .el-button {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.el-dialog__header {
+  position: relative;
+  background-color: #555;
+  padding: 10px 20px;
+  .el-dialog__title {
+    color: white;
+  }
+  .el-dialog__headerbtn {
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    transform: translate(0, -50%);
+  }
+}
+.navbar {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #545c64;
+  padding: 0 12px;
+  height: 64px;
+  .nav {
+    display: flex;
+    align-items: center;
+    li {
+      a {
+        padding: 12px 24px;
+        display: block;
+        color: white;
+        transition: 0.3s ease all;
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+}
+.login-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .form {
+    border: 1px solid #aaa;
+    width: 400px;
+    max-width: 100%;
+    padding: 2% 2% 2% 1%;
+    background-color: white;
+    border-radius: 4px;
+    label {
+      // color: white;
+    }
+    .submit {
+      width: 100%;
+    }
+  }
+}
