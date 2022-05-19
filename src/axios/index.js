@@ -16,8 +16,7 @@ const BASE_URL = "http://192.168.0.161:3000";
 
 function getProfile() {
   try {
-    const profile = JSON.parse(window.localStorage.getItem("auth"));
-
+    const profile = JSON.parse(window.localStorage.getItem("auth")) || {};
     return profile;
   } catch (e) {}
   return {};

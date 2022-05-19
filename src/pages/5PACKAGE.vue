@@ -426,8 +426,11 @@ export default {
      * 新增不良原因
      */
     addReason() {
+      const maxList = this.infoList.map((o) => o.SFFDSEQ1);
+      const max = Math.max(...maxList);
+      console.log(max);
       this.reasonForm = {
-        SFFDSEQ1: this.infoList.length + 1,
+        SFFDSEQ1: max + 1,
       };
       this.resaonModalMode = "add";
       this.reasonModalOpen = true;
