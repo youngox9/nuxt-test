@@ -4,9 +4,6 @@ export default {
   srcDir: "src/",
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
-  render: {
-    csp: true,
-  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "nuxt-test",
@@ -22,7 +19,9 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
-
+  router: {
+    base: "./",
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["element-ui/lib/theme-chalk/index.css"],
 
