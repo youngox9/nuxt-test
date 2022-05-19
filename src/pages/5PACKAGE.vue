@@ -535,6 +535,12 @@ export default {
         });
       } catch (e) {
         console.log(e);
+        this.$notify({
+          title: "Error",
+          message: e.message,
+          type: "error",
+          duration: 1000,
+        });
       }
       this.$store.commit("global/setIsLoading", false);
     },
@@ -566,6 +572,12 @@ export default {
         this.getReasonList();
       } catch (e) {
         console.log(e);
+        this.$notify({
+          title: "Error",
+          message: e.message,
+          type: "error",
+          duration: 1000,
+        });
       }
       this.$store.commit("global/setIsLoading", false);
     },

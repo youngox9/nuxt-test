@@ -4,7 +4,9 @@ export default {
   srcDir: "src/",
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
-
+  render: {
+    csp: true,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: "nuxt-test",
@@ -16,6 +18,7 @@ export default {
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
+      {},
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
