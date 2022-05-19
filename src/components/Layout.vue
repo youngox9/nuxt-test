@@ -1,6 +1,8 @@
 <!-- Please remove this file from your project -->
 <template>
   <div>
+    <div class="loading" v-if="isLoading"></div>
+
     <div class="navbar">
       <ul class="nav">
         <li v-for="(item, index) in menuList" :index="index">
@@ -21,8 +23,11 @@ import "@/styles/style.scss";
 export default {
   props: ["auth"],
   computed: {
+    isLoading() {
+      return this.$store.state.global.isLoading;
+    },
     profile() {
-      return this.$store.state.auth.profile;
+      return this.$store.state.global.profile;
     },
   },
   data() {
@@ -43,7 +48,7 @@ export default {
       const { accessToken = "" } = profile;
       if (accessToken) {
         this.isLogin = true;
-        this.$store.commit("auth/setProfile", profile);
+        this.$store.commit("global/setProfile", profile);
       } else {
         this.isLogin = false;
         this.$router.push({ name: "index" });
