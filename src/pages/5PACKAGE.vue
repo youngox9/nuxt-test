@@ -4,6 +4,47 @@
     <div class="content">
       <h2>5PACKAGE</h2>
       <el-form
+        @submit.native.prevent
+        :model="searchForm"
+        status-icon
+        :rules="searchFormRules"
+        ref="searchForm"
+        label-width="80px"
+      >
+        <el-row :gutter="12">
+          <el-col :span="22">
+            <el-form-item label="工單單號" prop="orderNo">
+              <el-input
+                placeholder="工單單號"
+                type="username"
+                v-model="searchForm.orderNo"
+                autocomplete="off"
+                @input="isSearch = false"
+              >
+                <!-- <el-button
+                  slot="append"
+                  icon="el-icon-error"
+                  :disabled="!orderNo"
+                  @click="resetForm"
+                ></el-button> -->
+              </el-input>
+            </el-form-item></el-col
+          >
+          <el-col :span="2">
+            <el-button
+              native-type="submit"
+              type="primary"
+              icon="el-icon-search"
+              @click="search"
+              :style="{ width: '100%' }"
+            >
+              搜尋
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-form>
+      <el-form
+        @submit.native.prevent
         :model="form"
         status-icon
         :rules="rules"
@@ -11,22 +52,6 @@
         label-width="80px"
         class="form"
       >
-        <el-form-item label="工單">
-          <el-input type="username" v-model="orderNo" autocomplete="off">
-            <el-button
-              slot="append"
-              icon="el-icon-error"
-              :disabled="!orderNo"
-              @click="resetForm"
-            ></el-button>
-            <el-button
-              slot="append"
-              icon="el-icon-search"
-              :disabled="!orderNo"
-              @click="search"
-            ></el-button
-          ></el-input>
-        </el-form-item>
         <div v-if="isSearch">
           <el-row :gutter="24">
             <el-col :xs="24" :sm="8">
@@ -74,11 +99,8 @@
               <el-form-item label="報工機器" prop="SFFB010">
                 <el-input
                   type="text"
-                  :value="form.SFFB010"
-                  placeholder="SFFB010"
-                  @blur.capture="checkMachine"
-                  @input="toUpperCase"
-                  ref="sffb010input"
+                  v-model="form.SFFB010"
+                  placeholder="報工機器"
                 ></el-input>
               </el-form-item>
             </el-col>
@@ -136,6 +158,7 @@
                 size="medium"
                 @click="submitForm('form')"
                 :loading="loading"
+                native-type="submit"
               >
                 報工
               </el-button>
@@ -297,6 +320,24 @@ export default {
     profile() {
       return this.$store.state.global.profile;
     },
+    // rules() {
+    //   return {
+    //     // 報工人員
+    //     SFFB002: [VALIDATIONS.isEmpty()],
+    //     // 報工機器
+    //     SFFB010: [
+    //       // VALIDATIONS.isEmpty(),
+    //       VALIDATIONS.checkMachine({
+    //         ENT: "20",
+    //         SFFB005: this.searchForm.orderNo,
+    //         SFFB007: this.form.SFFB007,
+    //         SFFB009: "5 PACKAGE",
+    //       }),
+    //     ],
+    //     // 良品數量
+    //     SFFB017_1: [VALIDATIONS.isEmpty()],
+    //   };
+    // },
   },
   data() {
     return {
@@ -306,10 +347,11 @@ export default {
       reasonModalOpen: false,
       resaonModalMode: "add",
       loading: false,
-      orderNo: "K-AASB-2205040001",
+      // orderNo: "K-AASB-2205040001",
       reason: "",
 
       list: [],
+      searchForm: { orderNo: "K-AASB-2205040001" },
       reasonForm: {
         // SFFDSEQ1: "5",
         SFFD001: "1",
@@ -317,26 +359,33 @@ export default {
         SFFD003: "1",
       },
       reasonFormRules: {
-        // SFFDSEQ1: [VALIDATIONS.isEmpty],
-        SFFD001: [VALIDATIONS.isEmpty],
-        SFFD002: [VALIDATIONS.isEmpty],
-        SFFD003: [VALIDATIONS.isEmpty],
+        // SFFDSEQ1: [VALIDATIONS.isEmpty()],
+        SFFD001: [VALIDATIONS.isEmpty()],
+        SFFD002: [VALIDATIONS.isEmpty()],
+        SFFD003: [VALIDATIONS.isEmpty()],
       },
       form: {
         SFFBDOCNO: "K-ACR1-2204210037",
         SFFB002: "2019021101",
+        // 報工機器
         SFFB010: "TP050",
         SFFB017: "0",
         SFFB018: "0",
       },
       rules: {
         // 報工人員
-        SFFB002: [VALIDATIONS.isEmpty],
+        SFFB002: [VALIDATIONS.isEmpty()],
         // 報工機器
-        SFFB010: [VALIDATIONS.isEmpty],
+        SFFB010: [
+          VALIDATIONS.isEmpty(),
+          VALIDATIONS.checkMachine({
+            validator: this.checkMachine,
+          }),
+        ],
         // 良品數量
-        SFFB017_1: [VALIDATIONS.isEmpty],
+        SFFB017_1: [VALIDATIONS.isEmpty()],
       },
+      searchFormRules: { orderNo: [VALIDATIONS.isEmpty()] },
     };
   },
   created() {},
@@ -348,11 +397,26 @@ export default {
     },
   },
   methods: {
+    async checkMachine(value) {
+      // console.log(e);
+      const res = await axios({
+        url: "/5package/sfc/csft335_sffb010_chk01",
+        method: "post",
+        data: {
+          ENT: "20",
+          SFFB009: "5 PACKAGE",
+          SFFB005: this.searchForm.orderNo,
+          SFFB007: this.form.SFFB007,
+          SFFB010: value,
+        },
+      });
+      return res?.data === "OK";
+    },
     /**
      * 重置表單
      */
     resetForm() {
-      this.orderNo = "";
+      this.searchForm.orderNo = "";
       this.isSearch = false;
       this.$refs["form"].resetFields();
     },
@@ -506,18 +570,20 @@ export default {
     async putReason(data) {
       console.log(data);
     },
-    async checkMachine() {
+    async checkMachine(val) {
+      // console.log(e);
+      this.form.SFFB010 = val;
       const res = await axios({
         url: "/5package/sfc/csft335_sffb010_chk01",
         method: "post",
         data: {
           ENT: "20",
-          SFFB005: "K-AASB-2205040001",
-          SFFB007: "1700",
+          SFFB005: this.searchForm.orderNo,
           SFFB009: "5 PACKAGE",
-          SFFB010: "TP050",
+          ...this.form,
         },
       });
+      return val;
     },
 
     /**
@@ -543,21 +609,35 @@ export default {
      * [POST] 尋找工單
      */
     async search() {
+      const formBbj = this?.$refs?.["searchForm"];
+      if (formBbj) {
+        formBbj.validate((valid) => {
+          if (valid) {
+            this.onSearch();
+          } else {
+            console.log("error submit!!");
+          }
+        });
+      }
+    },
+    async onSearch() {
+      this.$store.commit("global/setIsLoading", true);
       try {
         const res = await axios({
           url: "/5package/sfc/csft335_sffb_get01",
           method: "post",
           data: {
             ENT: "20",
-            SFFB005: "K-AASB-2205040001",
+            SFFB005: this.searchForm.orderNo,
           },
         });
         const data = res?.data?.[0] || {};
         this.isSearch = true;
-        this.form = { ...this.form, ...data };
+        this.form = { data };
       } catch (e) {
         console.log(e);
       }
+      this.$store.commit("global/setIsLoading", false);
     },
   },
 };

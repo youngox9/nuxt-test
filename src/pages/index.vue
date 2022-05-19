@@ -46,7 +46,7 @@ import axios from "@/axios";
 export default {
   computed: {
     profile() {
-      return this.$store.state.global.profile;
+      return this.$store.state.auth.profile;
     },
   },
   data() {
@@ -94,13 +94,13 @@ export default {
         };
         const res = await axios({
           auth: true,
-          url: "/api/global/signin",
+          url: "/api/auth/signin",
           method: "post",
           data,
         });
         const profile = res?.data || {};
         this.$store.commit("global/setProfile", profile);
-        this.$router.push({ name: "001" });
+        this.$router.push({ name: "5PACKAGE" });
       } catch (e) {
         console.log(e);
       }
