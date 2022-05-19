@@ -43,6 +43,7 @@
           </el-col>
         </el-row>
       </el-form>
+      <el-divider></el-divider>
       <el-form
         @submit.native.prevent
         :model="form"
@@ -410,6 +411,7 @@ export default {
           SFFB010: value,
         },
       });
+
       return res?.data === "OK";
     },
     /**
@@ -570,21 +572,6 @@ export default {
     async putReason(data) {
       console.log(data);
     },
-    async checkMachine(val) {
-      // console.log(e);
-      this.form.SFFB010 = val;
-      const res = await axios({
-        url: "/5package/sfc/csft335_sffb010_chk01",
-        method: "post",
-        data: {
-          ENT: "20",
-          SFFB005: this.searchForm.orderNo,
-          SFFB009: "5 PACKAGE",
-          ...this.form,
-        },
-      });
-      return val;
-    },
 
     /**
      * [POST] 取得不良原因列表
@@ -633,7 +620,7 @@ export default {
         });
         const data = res?.data?.[0] || {};
         this.isSearch = true;
-        this.form = { data };
+        this.form = { ...data };
       } catch (e) {
         console.log(e);
       }

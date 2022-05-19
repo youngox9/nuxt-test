@@ -16,7 +16,10 @@ export const VALIDATIONS = {
     validator: async (rule, value, callback) => {
       const { validator } = props;
       const result = await validator(value);
-      console.log(result);
+      if (!value) {
+        callback();
+        return;
+      }
       if (!result) {
         callback(new Error("機台輸入錯誤"));
       } else {
