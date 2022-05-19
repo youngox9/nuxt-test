@@ -145,10 +145,10 @@
       </el-form>
     </div>
     <!-- 不良原因列表 -->
-    <el-dialog title="不良原因列表" :visible.sync="modalOpen">
+    <el-dialog title="不良原因" :visible.sync="modalOpen">
       <div class="flex-box right">
         <el-button
-          size="mini"
+          size="small"
           type="info"
           icon="el-icon-refresh"
           circle
@@ -158,7 +158,7 @@
           class="submit"
           type="primary"
           plain
-          size="mini"
+          size="small"
           @click="addReason()"
         >
           新增不良原因
@@ -199,6 +199,7 @@
               type="danger"
               icon="el-icon-delete"
               circle
+              @click="removeReason(scope.row)"
             ></el-button>
           </template>
         </el-table-column>
@@ -206,8 +207,7 @@
 
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="modalOpen = false">取 消</el-button>
-          <el-button type="primary" @click="addSubmit">送出 </el-button>
+          <el-button @click="modalOpen = false">關閉</el-button>
         </span>
       </template>
     </el-dialog>
@@ -247,7 +247,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="數量" prop="SFFD002">
               <el-input
                 type="number"
@@ -375,6 +375,41 @@ export default {
       this.reasonForm = { ...data };
       this.resaonModalMode = "edit";
       this.reasonModalOpen = true;
+    },
+    async removeReason(rowData) {
+      // /5package/sfc/csft335_sffd_del01
+      var yes = confirm("確定刪除?");
+
+      console.log();
+
+      if (yes) {
+        this.$store.commit("global/setIsLoading", true);
+        try {
+          const data = {
+            ENT: "20",
+            SITE: "0001",
+            SFFDDOCNO: this.form.SFFBDOCNO,
+            SFFDSEQ1: rowData.SFFDSEQ1,
+          };
+          const res = await axios({
+            url: "/5package/sfc/csft335_sffd_del01",
+            method: "post",
+            data,
+          });
+          this.$notify({
+            title: "Success",
+            message: "刪除成功",
+            type: "success",
+            duration: 1000,
+          });
+          this.getReasonList();
+        } catch (e) {
+          console.log(e);
+        }
+        this.$store.commit("global/setIsLoading", false);
+      } else {
+        // alert("你按了取消按鈕");
+      }
     },
     /**
      * 報工
