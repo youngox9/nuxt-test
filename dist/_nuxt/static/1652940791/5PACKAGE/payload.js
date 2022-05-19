@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/5PACKAGE", {data:[{}],fetch:{},mutations:[]});
