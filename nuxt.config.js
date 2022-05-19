@@ -11,6 +11,11 @@ export default {
       lang: "zh-tw",
     },
     meta: [
+      { "http-equiv": "Content-Type", content: "text/html; charset=UTF-8" },
+      {
+        "http-equiv": "Content-Security-Policy",
+        content: "upgrade-insecure-requests",
+      },
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
