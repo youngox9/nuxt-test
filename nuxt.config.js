@@ -1,21 +1,44 @@
 import { resolve } from "path";
 
+const isDev = process.env.NODE_ENV !== "production";
 export default {
   srcDir: "src/",
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",
+  // mode: "spa",
+  generate: {
+    dir: "./dist",
+  },
+  rootDir: ".",
+  router: {
+    base: "./",
+  },
+  build: {
+    quiet: false,
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
+  // ...(isDev
+  //   ? {}
+  //   : {
+  //       router: {
+  //         base: "./",
+  //       },
+  //     }),
+  // build: {
+  //   publicPath: "./",
+  // },
   head: {
     title: "nuxt-test",
     htmlAttrs: {
       lang: "zh-tw",
     },
     meta: [
-      { "http-equiv": "Content-Type", content: "text/html; charset=UTF-8" },
-      {
-        "http-equiv": "Content-Security-Policy",
-        content: "upgrade-insecure-requests",
-      },
+      // { "http-equiv": "Content-Type", content: "text/html; charset=UTF-8" },
+      // {
+      //   "http-equiv": "Content-Security-Policy",
+      //   content: "upgrade-insecure-requests",
+      // },
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
@@ -24,9 +47,7 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
-  router: {
-    base: "./",
-  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["element-ui/lib/theme-chalk/index.css"],
 
